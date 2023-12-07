@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados de la Consulta</title>
+    <!-- Agrega enlaces a los archivos de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Resultados de la Consulta</h1>
+    <div>
+        <!-- Aquí puedes agregar tu código de Chart.js para visualizar los resultados -->
+        <!-- Ejemplo simple de un gráfico de barras -->
+        <canvas id="myChart" width="400" height="400"></canvas>
+        <script>
+            // Aquí puedes agregar tu código de Chart.js para inicializar el gráfico
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Resultado 1', 'Resultado 2', 'Resultado 3'], // Agrega etiquetas según tus datos
+                    datasets: [{
+                        label: 'Valores',
+                        data: [10, 20, 30], // Agrega datos según tus resultados
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>
