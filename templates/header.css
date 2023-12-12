@@ -1,0 +1,30 @@
+.header {
+    background-color: #000000;
+    grid-area: header;
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+}
+
+/* Estilos para la barra superior dentro de la barra lateral */
+.top-menu {
+    display: flex; /* Utiliza el modelo de diseño flexbox */
+    flex-direction: column; /* Coloca los elementos en columna */
+    align-items: center; /* Centra horizontalmente el contenido */
+    justify-content: center; /* Centra verticalmente el contenido */
+    margin-top: 60px; /* Añade un margen superior para espacio hacia arriba */
+    margin-bottom: 70px; /* Añade un margen inferior para espacio hacia abajo */
+}
+
+.top-menu span {
+    font-size: 36px; /* Aumenta el tamaño del texto */
+    color: #fff; /* Color del texto en la barra superior */
+    font-weight: bold; /* Peso de la fuente en negrita */
+    letter-spacing: 2px; /* Espaciado entre caracteres */
+    transition: 0.5s; /* Duración de la transición */
+    text-decoration: none; /* Sin decoración de texto */
+}
+
+.top-menu span:hover {
+    color: #ffcc00; /* Cambia el color al pasar el mouse */
+}

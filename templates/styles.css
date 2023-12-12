@@ -1,0 +1,133 @@
+/* Estilos generales para el cuerpo de la página */
+body {
+    height: 100vh;
+
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: 60px 1fr;
+    grid-template-areas: 
+        "side header"
+        "side main";
+
+    margin: 0;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.main {
+    background-color: #c3c5ca;
+    padding: 25px;
+    grid-area: main;
+    display: grid;
+}
+
+.analiticas-section {
+    /* Estilos para la sección "Analíticas" */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: 
+        "c1 c2 c3"
+        "c4 c4 c5"
+        "c4 c4 c6";
+    gap: 20px;
+}
+
+.card {
+    background-color: #f6f6f6;
+    border-radius: 10px;
+}
+
+.card:nth-child(1) {
+    grid-area: c1;
+}
+.card:nth-child(2) {
+    grid-area: c2;
+}
+.card:nth-child(3) {
+    grid-area: c3;
+}
+.card:nth-child(4) {
+    grid-area: c4;
+}
+.card:nth-child(5) {
+    grid-area: c5;
+}
+.card:nth-child(6) {
+    grid-area: c6;
+}
+
+.terreno-section {
+    /* Estilos para la sección "Terreno" */
+    grid-template-columns: auto; /* O ajusta según necesidades */
+    grid-template-rows: auto;   /* O ajusta según necesidades */
+    grid-template-areas: "b1" "b2" "b3" "b4" "b5" "b6";
+    gap: 20px;
+}
+.info {
+    background-color: #f6f6f6;
+    border-radius: 10px;
+}
+
+.info:nth-child(1) {
+    grid-area: b1;
+}
+.info:nth-child(2) {
+    grid-area: b2;
+}
+.info:nth-child(3) {
+    grid-area: b3;
+}
+.info:nth-child(4) {
+    grid-area: b4;
+}
+.info:nth-child(5) {
+    grid-area: b5;
+}
+.info:nth-child(6) {
+    grid-area: b6;
+}
+
+@media screen and (max-width: 1000px) {
+    .analiticas-section {
+        grid-template-columns: auto;
+        grid-template-rows: auto auto auto auto auto auto;
+        grid-template-areas: "c1" "c2" "c3" "c4" "c5" "c6";
+    }
+    .c4 {
+        height: 300px;
+    }
+    .c5{
+        height: 300px;
+    }
+    .card {
+        margin-bottom: 20px; /* Ajusta el margen inferior según sea necesario */
+    }
+    .sidebar {
+        display: block;
+        width: 100%; /* Ajusta el ancho de la barra lateral en dispositivos más pequeños */
+        transition: none; /* Desactiva la transición para dispositivos más pequeños */
+    }
+    
+}
+
+/* car c6 botones */
+.boton {
+    width: 98%;
+    height: 100px;
+    background-color: #66abda;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.boton:hover {
+    background-color: #60be88;
+}
+

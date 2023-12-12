@@ -1,0 +1,71 @@
+/* Estilos para sidebar.css */
+
+/* FONTS AWESOME */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+/* Estilos para la barra lateral */
+.sidebar {
+    width: 100px;
+    height: 100vh;
+    background: #1c1c1c;
+    padding: 5px;
+    transition: width 0.3s ease;
+    grid-area: side;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra verticalmente el contenido */
+    position: fixed;
+
+}
+
+/* Añade un estilo para el hover en la barra lateral */
+.sidebar:hover {
+    width: 200px; /* Ajusta el ancho deseado al pasar el mouse */
+}
+
+/* Estilos para los enlaces en la barra lateral */
+.menu {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos para los enlaces en la barra lateral */
+.menu .enlace {
+    width: 75%;
+    padding: 25px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff; /* Color del texto en los enlaces */
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    position: relative; /* Añade posición relativa para los elementos hijos absolutos */
+}
+
+.menu .enlace i {
+    margin-right: 40px;
+    font-size: 40px;
+    color: #fff; /* Color del ícono en los enlaces */
+}
+
+.menu .enlace span {
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 65%;
+    transform: translate(-50%, -50%); /* Centra el elemento en el medio */
+    white-space: nowrap;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Añade transición de opacidad y posición */
+}
+
+.sidebar:hover .menu .enlace span {
+    opacity: 1; /* Ajusta la opacidad al hacer hover en la barra lateral */
+}
+
+/* Efecto de hover para resaltar los enlaces */
+.menu .enlace:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}

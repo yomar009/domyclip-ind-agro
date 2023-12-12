@@ -1,0 +1,8 @@
+        # Configura la conexión a la base de datos
+        mydb = mysql.connector.connect(
+            host="localhost", # Puedes usar '127.0.0.1' o 'localhost' si es local
+            user="root", # Nombre de usuario de la base de datos
+            password="Herlindo58",  # Contraseña del usuario de la base de datos
+            database="sensores_data", # Nombre de la base de datos a la que deseas conectarte
+            use_pure=True
+        )
