@@ -5,11 +5,17 @@
     <title>dashboard control</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
-
+<!--
     <link rel="stylesheet" href="styles.css">
     <link rel ="stylesheet" href="sidebar.css">
     <link rel ="stylesheet" href="header.css">
     <script src="Graficas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
+    <script src="{{ url_for('static', filename='Graficas.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -19,6 +25,9 @@
         <div class="top-menu">
             <div class="logo">
                 <span>DomyCort</span>
+            </div>
+            <div class="Version">
+                v1.01.1
             </div>
         </div>
     </header>

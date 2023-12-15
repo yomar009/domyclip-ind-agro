@@ -3,17 +3,15 @@
     grid-area: header;
     display: flex;
     align-items: center; /* Centra verticalmente el contenido */
-    justify-content: center; /* Centra horizontalmente el contenido */
+    justify-content: center; /* Distribuye el espacio entre los elementos */
+    padding: 10px;
 }
 
 /* Estilos para la barra superior dentro de la barra lateral */
 .top-menu {
     display: flex; /* Utiliza el modelo de diseño flexbox */
-    flex-direction: column; /* Coloca los elementos en columna */
     align-items: center; /* Centra horizontalmente el contenido */
-    justify-content: center; /* Centra verticalmente el contenido */
-    margin-top: 60px; /* Añade un margen superior para espacio hacia arriba */
-    margin-bottom: 70px; /* Añade un margen inferior para espacio hacia abajo */
+
 }
 
 .top-menu span {
@@ -27,4 +25,16 @@
 
 .top-menu span:hover {
     color: #ffcc00; /* Cambia el color al pasar el mouse */
+}
+.Version {
+    font-size: 16px;
+    color:#fff;
+    text-align: right;
+    margin-left: 300%;
+}
+
+@media screen and (max-width: 1000px) {
+    .Version {
+        margin: 30%;
+    }
 }
