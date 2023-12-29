@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, session
 import mysql.connector
 from datetime import datetime
 
 app = Flask(__name__, static_url_path='/static')
+app.secret_key = 'admin'  # Clave de producción
 
 # Configura la conexión a la base de datos
 mydb = mysql.connector.connect(
@@ -13,16 +14,17 @@ mydb = mysql.connector.connect(
     use_pure=True
 )
 
+# Función para obtener datos de humedad del suelo
 def get_humidity_soil_data(date_filter):
-    cursor = None  # Inicializa cursor fuera del bloque try para evitar UnboundLocalError
+    cursor = None
     try:
         if mydb.is_connected():
             cursor = mydb.cursor()
             cursor.execute("SELECT id, humedad_suelo, hora FROM sensorsuelo WHERE fecha = %s", (date_filter,))
             data = cursor.fetchall()
-            sorted_data = sorted(data, key=lambda x: x[1])
-            hours_soil = [row[1].total_seconds() / 3600 for row in sorted_data]
-            humidity_soil = [row[0] for row in sorted_data]
+            sorted_data = sorted(data, key=lambda x: x[2])  # Cambié a x[2] para ordenar por hora
+            hours_soil = [row[2].total_seconds() / 3600 for row in sorted_data]
+            humidity_soil = [row[1] for row in sorted_data]
             return humidity_soil, hours_soil
 
     except mysql.connector.Error as err:
@@ -31,39 +33,55 @@ def get_humidity_soil_data(date_filter):
     finally:
         if cursor:
             cursor.close()
-        mydb.close()
 
     return None, None
 
+# Función para obtener datos de la tabla de automatización
 def get_data_from_table(date_filter):
-    cursor = None  # Inicializa cursor fuera del bloque try para evitar UnboundLocalError
+    cursor = None
     try:
         if mydb.is_connected():
-            # Crear un objeto cursor para ejecutar consultas
             cursor = mydb.cursor()
-            # Consulta SQL para obtener los datos de la tabla
-            cursor.execute(f"SELECT id, temperatura, humedad, fecha, hora FROM datos_automatizacion WHERE fecha = %s", (date_filter,))
+            cursor.execute("SELECT id, temperatura, humedad, fecha, hora FROM datos_automatizacion WHERE fecha = %s", (date_filter,))
             data = cursor.fetchall()
-            # Ordenar los datos por hora
             sorted_data = sorted(data, key=lambda x: x[4])
-            # Convertir las horas a formato adecuado
             hours_amb = [row[4].total_seconds() / 3600 for row in sorted_data]
-            # Datos de temperatura
             temperatures_amb = [row[1] for row in sorted_data]
-            # Datos de humedad
             humidity_amb = [row[2] for row in sorted_data]
             return temperatures_amb, humidity_amb, hours_amb
     except mysql.connector.Error as err:
         print(f"Error: {err}")
     finally:
-        # Cerrar el cursor solo si está definido
         if cursor:
             cursor.close()
-        mydb.close()
+
     return None, None, None
 
-@app.route('/')
+# Ruta de inicio de sesión
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if 'loggedin' in session and session['loggedin']:
+        return redirect(url_for('dashboard'))
+
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Verificar las credenciales (reemplazar con lógica real de autenticación)
+        if username == 'ProAdm' and password == 'admin':
+            session['loggedin'] = True
+            session['username'] = username
+            return redirect(url_for('dashboard'))
+        else:
+            return 'Credenciales incorrectas'
+
+    return render_template('index.html')
+
+@app.route('/dashboard')
+def dashboard():
+    if 'loggedin' not in session or not session['loggedin']:
+        return redirect(url_for('index'))
+
     # Obtener la fecha proporcionada por la página HTML, si no se proporciona, usar la fecha actual
     date_filter = request.args.get('date_filter', default=datetime.now().strftime('%Y-%m-%d'), type=str)
 
@@ -73,9 +91,9 @@ def index():
     humidity_soil, hours_soil = get_humidity_soil_data(date_filter)
 
     # Renderizar la plantilla con los datos obtenidos
-    return render_template('index.html',
+    return render_template('dashboard.html',
                            temperatures_amb=temperatures_amb, humidity_amb=humidity_amb, hours_amb=hours_amb,
-                           humidity_soil=humidity_soil, hours_soil=hours_soil)
+                           humidity_soil=humidity_soil, hours_soil=hours_soil, username=session['username'])
 
 @app.route('/activar_riego')
 def activar_riego():
@@ -91,6 +109,54 @@ def activar_ventilacion():
 
     return 'Ventilación 10 minutos'
 
+# Ruta para cerrar sesión
+@app.route('/logout')
+def logout():
+    session.pop('loggedin', None)
+    session.pop('username', None)
+    return redirect(url_for('index'))
+
 if __name__ == '__main__':
     # Iniciar la aplicación Flask
     app.run(debug=True, host='0.0.0.0')
+
+
+# Ruta de inicio de sesión con mysql
+# Función para verificar las credenciales en la base de datos
+"""
+def verificar_credenciales(username, password):
+    cursor = None
+    try:
+        if mydb.is_connected():
+            cursor = mydb.cursor(dictionary=True)
+            cursor.execute("SELECT * FROM usuarios WHERE nombre_usuario = %s", (username,))
+            user = cursor.fetchone()
+
+            if user and user['contrasena'] == password:
+                return True
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+    finally:
+        if cursor:
+            cursor.close()
+    return False
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if 'loggedin' in session and session['loggedin']:
+        return redirect(url_for('dashboard'))
+
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Verificar las credenciales contra la base de datos
+        if verificar_credenciales(username, password):
+            session['loggedin'] = True
+            session['username'] = username
+            return redirect(url_for('dashboard'))
+        else:
+            return 'Credenciales incorrectas'
+
+    return render_template('index.html')
+"""

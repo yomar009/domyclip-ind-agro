@@ -1,14 +1,18 @@
 # domycort-ind-agro
 
-domycort/
+domyclip/
 |--/static
 |------styles.css
 |------sidebar.css
 |------header.css
 |------Graficas.js
 |------chart.js
+|------
+|------stylesint.css
+|------bg.jpg
 |--/templates
 |------index.html
+|------dashboard.html
 |--app.py
 
 # Para instalar schedule

@@ -58,6 +58,7 @@
     left: 65%;
     transform: translate(-50%, -50%); /* Centra el elemento en el medio */
     white-space: nowrap;
+    color: #fff; /* Color del ícono en los enlaces */
     transition: opacity 0.3s ease, transform 0.3s ease; /* Añade transición de opacidad y posición */
 }
 

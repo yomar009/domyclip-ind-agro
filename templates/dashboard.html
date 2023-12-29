@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>dashboard control</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-xxxxxx" crossorigin="anonymous" />
+<!--
+    <link rel="stylesheet" href="styles.css">
+    <link rel ="stylesheet" href="sidebar.css">
+    <link rel ="stylesheet" href="header.css">
+    <script src="Graficas.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+-->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
+    <script src="{{ url_for('static', filename='Graficas.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+    <header class="header">
+        <!-- Menú lateral -->
+        <div class="top-menu">
+            <div class="logo">
+                <span>DomyClip</span>
+            </div>
+            <div class="Version">
+                v1.01.1
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="analiticas-section">
+            <!-- Contenido de la sección "Analíticas" -->
+            <div class="card c1">
+                <h2>Información del Suelo</h2>
+                <p>Contenido específico para la sección "Terreno" en terreno-info.</p>
+            </div>
+            <div class="card c2">
+                <h2>Información del Suelo</h2>
+                <p>Contenido específico para la sección "Terreno" en terreno-info.</p>
+            </div>
+            <div class="card c3">
+                <h2>Información del Suelo</h2>
+                <p>Contenido específico para la sección "Terreno" en terreno-info.</p>
+            </div>
+            <div class="card c4">
+                <canvas id="grafica-amb" class="grafica"></canvas>
+            </div>
+            <div class="card c5">
+                <canvas id="grafica-soil" class="grafica"></canvas>
+            </div>
+            <div class="card c6">
+                <!-- Primer botón -->
+                <button class="boton" onclick="activarDispositivo('activar_riego', this)">
+                    <i class="fas fa-tint"></i>
+                    <span>Activar Riego (10min)</span>
+                </button>
+
+                <!-- Segundo botón -->
+                <button class="boton" onclick="activarDispositivo('activar_ventilacion', this)">
+                    <i class="fas fa-fan"></i>
+                    <span>Activar Ventilación (10min)</span>
+                </button>
+                </button>
+            </div>
+        </div>
+
+        <div class="terreno-section hidden">
+            <!-- Contenido de la sección "Terreno" -->
+            <div class="info b1">
+                <h2>Información del Suelo</h2>
+                <p>Contenido específico para la sección "Terreno" en terreno-info.</p>
+                <!-- Otros elementos relacionados con la información del suelo -->
+            </div>
+            <div class="info b2">
+                <h2>Sensores de Humedad</h2>
+                <p>Contenido específico para la sección "Terreno" en terreno-humedad.</p>
+                <!-- Otros elementos relacionados con los sensores de humedad -->
+            </div>
+            <div class="info b3">
+                <h2>Control de Riego</h2>
+                <p>Contenido específico para la sección "Terreno" en terreno-control-riego.</p>
+                <!-- Otros elementos relacionados con el control de riego -->
+            </div>
+            <div class="info b4">
+                <h2>Mapa del Terreno</h2>
+                <p>Contenido específico para la sección "Terreno" en terreno-mapa.</p>
+                <!-- Otros elementos relacionados con el mapa del terreno -->
+            </div>
+            <div class="info b5">
+                <h2>Estadísticas del Terreno</h2>
+                <p>Contenido específico para la sección "Terreno" en terreno-estadisticas.</p>
+                <!-- Otros elementos relacionados con las estadísticas del terreno -->
+            </div>
+            <div class="info b6">
+                <h2>Herramientas de Jardinería</h2>
+                <p>Contenido específico para la sección "Terreno" en terreno-herramientas.</p>
+                <!-- Otros elementos relacionados con las herramientas de jardinería -->
+            </div>
+        </div>
+
+    </main>
+    
+    <section class="sidebar">
+
+        <div class="menu">
+            <div class="enlace" onclick="mostrarSeccion('analiticas')">
+                <i class="fas fa-chart-line"></i>
+                <span>Analíticas</span>
+            </div>
+            
+            <div class="enlace" onclick="mostrarSeccion('terreno')">
+                <i class="fas fa-tree"></i>
+                <span>Terreno</span>
+            </div>
+            <!--<div class="enlace">
+                <i class="fas fa-industry"></i>
+                <span>Fábrica</span>
+            </div> -->
+            <div class="enlace" onclick="actualizarGraficas()">
+                <i class="fas fa-sync-alt"></i>
+                <span>Actualizar</span>
+            </div>
+            <div class="enlace" onclick="webdomotycort()">
+                <i class="fas fa-globe"></i>
+                <span>Página web</span>
+            </div>
+            <div class="enlace">
+                <a href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        // Función para actualizar ambas gráficas
+        function actualizarGraficas() {
+            graficaAmbiental.destroy();
+            graficaSuelo.destroy();
+            graficaAmbiental = inicializarGraficaAmbiental();
+            graficaSuelo = inicializarGraficaSuelo();
+        }
+
+        function webdomotycort() {
+            var url = 'https://yomar009.github.io/domycort/';
+            window.open(url, '_blank');
+        }
+
+        //Funcion de botones Riego y Ventilazion 
+        function activarDispositivo(ruta, boton) {
+        fetch('/' + ruta)
+            .then(response => response.text())
+            .then(resultado => {
+                // Actualiza el texto del botón con el resultado
+                boton.innerHTML = '<i class="fas fa-check"></i> ' + resultado;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        function mostrarSeccion(seccion) {
+            // Oculta todas las secciones por defecto
+            document.querySelector('.analiticas-section').classList.add('hidden');
+            document.querySelector('.terreno-section').classList.add('hidden');
+
+            if (seccion === 'analiticas') {
+                // Muestra la sección de analíticas
+                document.querySelector('.analiticas-section').classList.remove('hidden');
+                // quita los elementos
+                document.querySelectorAll('.terreno-section .grafica, .terreno-section .boton, .terreno-section .info').forEach(elemento => elemento.style.display = 'none');
+                // muestra los elemtnos
+                document.querySelectorAll('.analiticas-section .grafica, .analiticas-section .boton, .analiticas-section .card').forEach(elemento => elemento.style.display = 'block');
+
+            } else if (seccion === 'terreno') {
+                // Muestra la sección de terreno
+                document.querySelector('.terreno-section').classList.remove('hidden');
+                // quita los elemtos 
+                document.querySelectorAll('.analiticas-section .grafica, .analiticas-section .boton, .analiticas-section .card').forEach(elemento => elemento.style.display = 'none');
+                // Mustra los elemtos 
+                document.querySelectorAll('.terreno-section .grafica, .terreno-section .boton, .terreno-section .info').forEach(elemento => elemento.style.display = 'block');
+
+            }
+        }
+
+    </script>
+</body>
+</html>
